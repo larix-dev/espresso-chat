@@ -1,7 +1,10 @@
 package com.larix.server;
 
+import com.larix.proto.EncryptionHelper;
+import com.larix.proto.MessagePacket;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.indunet.fastproto.FastProto;
 
 import java.io.BufferedInputStream;
 import java.io.DataInputStream;
@@ -34,7 +37,10 @@ public class ServerProtocol implements Runnable {
                 log.info("Received from client {}", Arrays.toString(buf));
 
                 if (clients.contains(this)) {
-                    // send to clients
+                    final byte[] decrypted = EncryptionHelper.decrypt(buf, secret);
+                    log.info("Decrypted message {}", decrypted);
+                    final MessagePacket message = FastProto.decode(decrypted, MessagePacket.class);
+                    log.info("Message {}", message);
                 } else {
                     doKeyExchange(decodePublicKey(buf));
                     clients.add(this);
@@ -57,8 +63,9 @@ public class ServerProtocol implements Runnable {
     }
 
     private void doKeyExchange(final PublicKey publicKey) {
-        final KeyPair keyPair = genKeyPair(2048);
+        final KeyPair keyPair = genKeyPair();
         secret = genSharedSecret(keyPair.getPrivate(), publicKey);
+        log.info("Generated secret {}", secret);
         sendPublicKey(keyPair.getPublic(), socket);
     }
 

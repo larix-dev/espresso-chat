@@ -11,10 +11,10 @@ import java.security.spec.X509EncodedKeySpec;
 
 public class KeyHelper {
 
-    public static KeyPair genKeyPair(final int size) {
+    public static KeyPair genKeyPair() {
         try {
             final KeyPairGenerator gen = KeyPairGenerator.getInstance("DH");
-            gen.initialize(size);
+            gen.initialize(2048);
             return gen.generateKeyPair();
         } catch (NoSuchAlgorithmException e) {
             throw new IllegalStateException(e);
@@ -36,7 +36,8 @@ public class KeyHelper {
             KeyAgreement keyAgreement = KeyAgreement.getInstance("DH");
             keyAgreement.init(privateKey);
             keyAgreement.doPhase(publicKey, true);
-            return keyAgreement.generateSecret();
+            final MessageDigest hash = MessageDigest.getInstance("SHA-256");
+            return hash.digest(keyAgreement.generateSecret());
         } catch (NoSuchAlgorithmException | InvalidKeyException e) {
             throw new IllegalStateException(e);
         }
