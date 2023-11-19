@@ -27,7 +27,7 @@ public class TestEspressoServer {
             final Socket socket = new Socket("localhost", 4123);
 
             final KeyPair keyPair = genKeyPair(2048);
-            socket.getOutputStream().write(keyPair.getPublic().getEncoded());
+            sendPublicKey(keyPair.getPublic(), socket);
 
             // read public
             final byte[] buf = new byte[1024];
