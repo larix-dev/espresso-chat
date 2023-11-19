@@ -1,4 +1,4 @@
-package com.larix;
+package com.larix.client;
 
 import javax.swing.*;
 import java.awt.*;

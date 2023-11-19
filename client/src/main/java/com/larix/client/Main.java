@@ -1,12 +1,6 @@
-package com.larix;
+package com.larix.client;
 
 import com.formdev.flatlaf.FlatDarculaLaf;
-import com.formdev.flatlaf.FlatIntelliJLaf;
-import org.indunet.fastproto.FastProto;
-
-import java.io.IOException;
-import java.io.OutputStream;
-import java.net.Socket;
 
 public class Main {
 

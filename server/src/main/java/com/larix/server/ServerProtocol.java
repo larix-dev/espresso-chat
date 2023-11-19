@@ -1,4 +1,4 @@
-package com.larix;
+package com.larix.server;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

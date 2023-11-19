@@ -1,4 +1,4 @@
-package com.larix;
+package com.larix.server;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -12,15 +12,15 @@ import java.util.List;
 public class EspressoServer {
 
     private final List<ServerProtocol> clients = new ArrayList<>();
-    private static final int PORT = 4123;
+    private final int port;
 
-    public EspressoServer() {
-
+    public EspressoServer(final int port) {
+        this.port = port;
     }
 
     public void start() {
-        try (final ServerSocket serverSocket = new ServerSocket(PORT)) {
-            log.info("Server started on port {}", PORT);
+        try (final ServerSocket serverSocket = new ServerSocket(port)) {
+            log.info("Server started on port {}", port);
 
             while (!Thread.interrupted()) {
                 final Socket clientSocket = serverSocket.accept();
