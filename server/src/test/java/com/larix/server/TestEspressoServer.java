@@ -6,12 +6,13 @@ import lombok.extern.slf4j.Slf4j;
 import org.indunet.fastproto.FastProto;
 import org.junit.jupiter.api.Test;
 
+import javax.crypto.SecretKey;
 import java.io.*;
 import java.net.Socket;
 import java.security.KeyPair;
 import java.security.PublicKey;
-import java.util.Arrays;
 
+import static com.larix.proto.EncryptionHelper.decrypt;
 import static com.larix.proto.KeyHelper.*;
 import static org.junit.jupiter.api.Assertions.fail;
 
@@ -38,9 +39,7 @@ public class TestEspressoServer {
             }
 
             final PublicKey serverPubKey = decodePublicKey(buf);
-            final byte[] secret = genSharedSecret(keyPair.getPrivate(), serverPubKey);
-
-            log.info("Generated secret {}", Arrays.toString(secret));
+            final SecretKey secret = genSharedSecret(keyPair.getPrivate(), serverPubKey);
 
             final MessagePacket message = new MessagePacket("tadashi", "This is a test message. I am going to chat about some stuff.");
             log.info("Original message {}", message);

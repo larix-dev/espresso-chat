@@ -6,16 +6,15 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.indunet.fastproto.FastProto;
 
-import java.io.BufferedInputStream;
-import java.io.DataInputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import javax.crypto.SecretKey;
+import java.io.*;
 import java.net.Socket;
 import java.security.KeyPair;
 import java.security.PublicKey;
 import java.util.Arrays;
 import java.util.List;
 
+import static com.larix.proto.EncryptionHelper.encrypt;
 import static com.larix.proto.KeyHelper.*;
 import static java.util.Arrays.fill;
 
@@ -27,7 +26,7 @@ public class ServerProtocol implements Runnable {
 
     private final Socket socket;
     private final List<ServerProtocol> clients;
-    private byte[] secret;
+    private SecretKey sharedSecret;
 
     @Override
     public void run() {
@@ -37,10 +36,11 @@ public class ServerProtocol implements Runnable {
                 log.info("Received from client {}", Arrays.toString(buf));
 
                 if (clients.contains(this)) {
-                    final byte[] decrypted = EncryptionHelper.decrypt(buf, secret);
+                    final byte[] decrypted = EncryptionHelper.decrypt(buf, sharedSecret);
                     log.info("Decrypted message {}", decrypted);
                     final MessagePacket message = FastProto.decode(decrypted, MessagePacket.class);
                     log.info("Message {}", message);
+                    broadcastMessage(message);
                 } else {
                     doKeyExchange(decodePublicKey(buf));
                     clients.add(this);
@@ -51,6 +51,21 @@ public class ServerProtocol implements Runnable {
         } catch (IOException e) {
             throw new IllegalStateException(e);
         }
+    }
+
+    public void sendMessage(final MessagePacket message) {
+        try {
+            final DataOutputStream out = new DataOutputStream(new BufferedOutputStream(socket.getOutputStream()));
+            final byte[] encrypted = encrypt(FastProto.encode(message, 1024), sharedSecret);
+            out.write(encrypted);
+            out.flush();
+        } catch (IOException e) {
+            throw new IllegalStateException(e);
+        }
+    }
+
+    public void broadcastMessage(final MessagePacket message) {
+        clients.forEach(client -> client.sendMessage(message));
     }
 
     private boolean readToBuffer(final byte[] buf, final InputStream in) {
@@ -64,8 +79,7 @@ public class ServerProtocol implements Runnable {
 
     private void doKeyExchange(final PublicKey publicKey) {
         final KeyPair keyPair = genKeyPair();
-        secret = genSharedSecret(keyPair.getPrivate(), publicKey);
-        log.info("Generated secret {}", secret);
+        sharedSecret = genSharedSecret(keyPair.getPrivate(), publicKey);
         sendPublicKey(keyPair.getPublic(), socket);
     }
 

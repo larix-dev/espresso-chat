@@ -1,6 +1,8 @@
 package com.larix.proto;
 
 import javax.crypto.KeyAgreement;
+import javax.crypto.SecretKey;
+import javax.crypto.spec.SecretKeySpec;
 import java.io.BufferedOutputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -31,13 +33,14 @@ public class KeyHelper {
         }
     }
 
-    public static byte[] genSharedSecret(final PrivateKey privateKey, final PublicKey publicKey) {
+    public static SecretKey genSharedSecret(final PrivateKey privateKey, final PublicKey publicKey) {
         try {
             KeyAgreement keyAgreement = KeyAgreement.getInstance("DH");
             keyAgreement.init(privateKey);
             keyAgreement.doPhase(publicKey, true);
             final MessageDigest hash = MessageDigest.getInstance("SHA-256");
-            return hash.digest(keyAgreement.generateSecret());
+            final byte[] secretBytes = hash.digest(keyAgreement.generateSecret());
+            return new SecretKeySpec(secretBytes, "AES");
         } catch (NoSuchAlgorithmException | InvalidKeyException e) {
             throw new IllegalStateException(e);
         }
