@@ -12,7 +12,6 @@ import java.net.Socket;
 import java.security.KeyPair;
 import java.security.PublicKey;
 
-import static com.larix.proto.EncryptionHelper.decrypt;
 import static com.larix.proto.KeyHelper.*;
 import static org.junit.jupiter.api.Assertions.fail;
 

@@ -6,7 +6,6 @@ import com.larix.client.view.EspressoClient;
 
 import javax.swing.*;
 
-import static com.formdev.flatlaf.util.SystemInfo.isMacFullWindowContentSupported;
 import static java.lang.Integer.parseInt;
 import static java.lang.System.exit;
 import static javax.swing.JOptionPane.OK_CANCEL_OPTION;

@@ -17,7 +17,6 @@ import java.util.List;
 import static com.larix.proto.EncryptionHelper.encrypt;
 import static com.larix.proto.KeyHelper.*;
 import static com.larix.proto.SocketHelper.readToBuffer;
-import static java.util.Arrays.fill;
 
 @Slf4j
 @RequiredArgsConstructor
