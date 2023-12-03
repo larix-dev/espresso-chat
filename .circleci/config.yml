@@ -8,10 +8,10 @@ jobs:
       - checkout
       - run:
           name: Get commit hash
-          command: echo $CIRCLE_SHA1 && export CIRCLE_SHA1_SHORT=$(echo $CIRCLE_SHA1 | cut -c1-7) && echo $CIRCLE_SHA1_SHORT
+          command: echo "${CIRCLE_SHA1:0:7}"
       - run:
           name: Run maven build
-          command: mvn clean install
+          command: mvn clean install -Dcommit.hash="${CIRCLE_SHA1:0:7}"
       - run:
           name: Copy artifacts
           command: mkdir artifacts && cp */target/*shaded*.jar artifacts
