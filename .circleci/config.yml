@@ -11,6 +11,6 @@ jobs:
           command: mvn clean install
       - run: find .
       - store_artifacts:
-          path: ~/client/target/client-1.0-SNAPSHOT-shaded.jar
+          path: ./client/target/*.jar
       - store_artifacts:
-          path: ~/server/target/*.jar
+          path: ./server/target/*.jar
