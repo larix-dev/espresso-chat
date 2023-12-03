@@ -25,8 +25,7 @@
         <fastproto.version>3.10.2</fastproto.version>
         <lombok.version>1.18.30</lombok.version>
         <maven.shade.version>3.5.1</maven.shade.version>
-        <!--suppress UnresolvedMavenProperty -->
-        <commit.hash>${env.CIRCLE_SHA1_SHORT}</commit.hash>
+        <commit.hash>local</commit.hash>
     </properties>
 
     <dependencies>
