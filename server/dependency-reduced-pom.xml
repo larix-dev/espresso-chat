@@ -11,7 +11,7 @@
     <sourceDirectory>src/main/java</sourceDirectory>
     <resources>
       <resource>
-        <directory>resources</directory>
+        <directory>src/main/resources</directory>
         <excludes>
           <exclude>**/*.java</exclude>
         </excludes>
@@ -33,6 +33,7 @@
                   <mainClass>com.larix.server.Main</mainClass>
                 </transformer>
               </transformers>
+              <finalName>espresso-chat-${project.artifactId}-${project.version}-${commit.hash}-shaded</finalName>
             </configuration>
           </execution>
         </executions>
