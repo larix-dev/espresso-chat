@@ -64,6 +64,7 @@
                                     <mainClass>com.larix.client.Main</mainClass>
                                 </transformer>
                             </transformers>
+                            <finalName>espresso-chat-${project.artifactId}-${project.version}-${commit.hash}-shaded</finalName>
                         </configuration>
                     </execution>
                 </executions>
