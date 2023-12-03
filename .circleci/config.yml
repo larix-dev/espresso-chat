@@ -7,9 +7,13 @@ jobs:
     steps:
       - checkout
       - run:
+          name: Get commit hash
+          command: export CIRCLE_SHA1_SHORT="${CIRCLE_SHA1:0:7}"
+      - run:
           name: Run maven build
           command: mvn clean install
-      - run: mkdir artifacts
-      - run: cp */target/*shaded*.jar artifacts
+      - run:
+          name: Copy artifacts
+          command: mkdir artifacts && cp */target/*shaded*.jar artifacts
       - store_artifacts:
           path: artifacts
