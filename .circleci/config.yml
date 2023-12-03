@@ -10,6 +10,6 @@ jobs:
           name: Run maven build
           command: mvn clean install
       - store_artifacts:
-          path: ~/client/target/*shaded*.jar
+          path: ~/client/target/*.jar
       - store_artifacts:
-          path: ~/server/target/*shaded*.jar
+          path: ~/server/target/*.jar
