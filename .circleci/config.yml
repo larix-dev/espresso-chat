@@ -9,8 +9,7 @@ jobs:
       - run:
           name: Run maven build
           command: mvn clean install
-      - run: find .
+      - run: mkdir artifacts
+      - run: cp */target/*shaded*.jar artifacts
       - store_artifacts:
-          path: "client/target/*.jar"
-      - store_artifacts:
-          path: "/server/target/*.jar"
+          path: artifacts
