@@ -1,0 +1,15 @@
+version: 2.1
+
+jobs:
+  build:
+    docker:
+      - image: cimg/openjdk:17.0.9
+    steps:
+      - checkout
+      - run:
+          name: Run maven build
+          command: mvn clean install
+      - store_artifacts:
+          path:
+            - ~/client/target/*shaded*.jar
+            - ~/server/target/*shaded*.jar

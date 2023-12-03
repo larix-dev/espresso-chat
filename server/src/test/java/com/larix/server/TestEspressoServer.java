@@ -4,6 +4,7 @@ import com.larix.proto.EncryptionHelper;
 import com.larix.proto.MessagePacket;
 import lombok.extern.slf4j.Slf4j;
 import org.indunet.fastproto.FastProto;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import javax.crypto.SecretKey;
@@ -15,6 +16,7 @@ import java.security.PublicKey;
 import static com.larix.proto.KeyHelper.*;
 import static org.junit.jupiter.api.Assertions.fail;
 
+@Disabled("Do not run in automatic test suite")
 @Slf4j
 public class TestEspressoServer {
 
