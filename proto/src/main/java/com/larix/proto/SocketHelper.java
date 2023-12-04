@@ -14,6 +14,9 @@ public class SocketHelper {
             fill(buf, (byte) 0);
             return in.read(buf) != END_OF_STREAM;
         } catch (IOException e) {
+            if(e.getMessage().equals("Socket closed")) {
+                return false;
+            }
             throw new RuntimeException(e);
         }
     }

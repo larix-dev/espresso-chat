@@ -35,7 +35,7 @@ public class ClientProtocol implements Runnable {
         try (final DataInputStream in = new DataInputStream(new BufferedInputStream(socket.getInputStream()))) {
             final byte[] buf = new byte[1024];
             while (readToBuffer(buf, in)) {
-                log.info("Received from client {}", Arrays.toString(buf));
+                log.info("Received from server {}", Arrays.toString(buf));
 
                 if (sharedSecret != null) {
                     final byte[] decrypted = EncryptionHelper.decrypt(buf, sharedSecret);
@@ -47,7 +47,7 @@ public class ClientProtocol implements Runnable {
                     sharedSecret = genSharedSecret(keyPair.getPrivate(), decodePublicKey(buf));
                 }
             }
-            log.info("Client disconnected {}", socket);
+            log.info("Disconnected from server {}", socket);
         } catch (IOException e) {
             throw new IllegalStateException(e);
         }

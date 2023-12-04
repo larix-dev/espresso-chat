@@ -22,8 +22,6 @@ import static com.larix.proto.SocketHelper.readToBuffer;
 @RequiredArgsConstructor
 public class ServerProtocol implements Runnable {
 
-    private static final int END_OF_STREAM = -1;
-
     private final Socket socket;
     private final List<ServerProtocol> clients;
     private SecretKey sharedSecret;
